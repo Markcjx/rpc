@@ -1,0 +1,24 @@
+syntax = "proto3";
+//生成的java名
+option java_outer_classname = "requestInfo";
+
+message RequsetMsg {
+
+  // ID
+  int32 requestId = 1;
+
+  // 类名
+  string className = 2;
+
+  // 方法名
+  string methodName = 3;
+
+  // 状态
+  repeated string paramType = 4;
+
+  repeated string param = 5;
+}
+
+message ResponseMsg{
+
+}

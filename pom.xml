@@ -12,7 +12,7 @@
   </parent>
   <modules>
     <module>server</module>
-    <module>client</module>
+    <module>myclient</module>
   </modules>
   <groupId>com.example</groupId>
   <artifactId>rpc</artifactId>
@@ -26,6 +26,7 @@
     <grpc.version>1.7.0</grpc.version>
     <!--protobuf 版本号-->
     <protobuf.version>3.4.0</protobuf.version>
+    <protostuff.version>1.6.0</protostuff.version>
   </properties>
 
 
@@ -76,6 +77,23 @@
       <artifactId>grpc-stub</artifactId>
       <version>${grpc.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>3.4.9</version>
+    </dependency>
+    <dependency>
+      <groupId>io.protostuff</groupId>
+      <artifactId>protostuff-core</artifactId>
+      <version>${protostuff.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.protostuff</groupId>
+      <artifactId>protostuff-runtime</artifactId>
+      <version>${protostuff.version}</version>
     </dependency>
   </dependencies>
 

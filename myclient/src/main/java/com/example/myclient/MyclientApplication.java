@@ -6,14 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MyclientApplication implements CommandLineRunner {
+public class MyclientApplication  {
 
   public static void main(String[] args) {
     SpringApplication.run(MyclientApplication.class, args);
   }
 
-  @Override
-  public void run(String... args) throws Exception {
-    NettyClient.init();
-  }
+
 }
