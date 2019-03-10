@@ -11,16 +11,21 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.Watcher.Event.EventType;
 import org.apache.zookeeper.ZooKeeper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServiceDiscovery {
+  private CountDownLatch latch ;
+  private volatile List<String> dataList ;
 
-  private CountDownLatch latch = new CountDownLatch(1);
-  private volatile List<String> dataList = new ArrayList<>();
-  private String registryAddress;
+  @Value("${netty.registryAddress}")
+  private String registryAddress = "127.0.0.1:2181";
 
   public ServiceDiscovery() {
+    latch = new CountDownLatch(1);
+    dataList = new ArrayList<>();
     ZooKeeper zk = connectServer();
     if (zk != null) {
         watchNode(zk);
@@ -30,6 +35,7 @@ public class ServiceDiscovery {
   public String discover() {
     String data = null;
     int size = dataList.size();
+    System.out.println("dataList is "+dataList.toString());
     if (size > 0){
       if(size == 1){
         data = dataList.get(0);
@@ -45,6 +51,7 @@ public class ServiceDiscovery {
   private ZooKeeper connectServer() {
     ZooKeeper zk = null;
     try {
+      System.out.println("*************"+registryAddress);
       zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
         @Override
         public void process(WatchedEvent event) {

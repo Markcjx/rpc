@@ -6,9 +6,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 @SuppressWarnings("unchecked")
+@Component
 public class RpcProxy {
   private String serverAddress;
   @Autowired
@@ -23,7 +27,7 @@ public class RpcProxy {
             req.setClassName(method.getDeclaringClass().getName());
             req.setMethodName(method.getName());
             req.setParameterTypes(method.getParameterTypes());
-            req.setParameters(method.getParameters());
+            req.setParameters(args);
 
             if(serviceDiscovery!=null){
               serverAddress = serviceDiscovery.discover();
@@ -34,7 +38,8 @@ public class RpcProxy {
 
             NettyClient nettyClient = new NettyClient(host,port);
             Response res = nettyClient.send(req);
-            return res;
+            System.out.println("完成调用");
+            return res.getResult();
           }
         });
   }

@@ -6,7 +6,6 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class ServiceRegistry {
 
   private CountDownLatch latch = new CountDownLatch(1);
-  @Value("netty.registyAddress")
+  @Value("${netty.registryAddress}")
   private String registryAddress;
 
   public void register(String data) {
@@ -31,6 +30,7 @@ public class ServiceRegistry {
   public ZooKeeper connect() {
     ZooKeeper zk = null;
     try {
+      System.out.println(registryAddress);
       zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
         @Override
         public void process(WatchedEvent watchedEvent) {

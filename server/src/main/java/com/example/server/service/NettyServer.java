@@ -67,7 +67,7 @@ public class NettyServer {
           .childOption(ChannelOption.SO_KEEPALIVE, true)
           .childOption(ChannelOption.TCP_NODELAY, true);
       ChannelFuture cf = boot.bind(port).sync();
-      serviceRegistry.register(serverAddress + port);
+      serviceRegistry.register(serverAddress +":"+ port);
       if (cf.isSuccess()) {
         System.out.println("启动 Netty Server");
       }

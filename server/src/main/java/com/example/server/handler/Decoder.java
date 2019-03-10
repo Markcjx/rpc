@@ -1,7 +1,9 @@
 package com.example.server.handler;
 
+import com.example.server.proto.Response;
 import com.example.server.util.SerializationUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Decoder extends ByteToMessageDecoder {
   @Override
   protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf,
       List<Object> list) throws Exception {
+    System.out.println("进入decoder");
     if (byteBuf.readableBytes() < 4) {
       return;
     }
