@@ -29,7 +29,7 @@ public class NettyClient {
   private String host;
   private int port;
   public static Map<String, Object> objMap = new ConcurrentHashMap<>();
-  public static Map<String, Object> responseMap = new HashMap<>();
+  public static Map<String, Object> responseMap = new ConcurrentHashMap<>();
 
   public NettyClient(String host, int port) {
     this.host = host;
@@ -54,7 +54,7 @@ public class NettyClient {
         synchronized (obj) {
           objMap.put(req.getRequestId(), obj);
           System.out.println("线程休眠");
-          obj.wait();
+          obj.wait(100);
         }
       }
       System.out.println("获取结果");
