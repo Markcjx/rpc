@@ -12,6 +12,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.apache.catalina.core.ApplicationContext;
@@ -35,13 +36,14 @@ public class NettyServer {
   private GenericApplicationContext app;
   @Autowired
   private ServiceRegistry serviceRegistry;
-
+  private AtomicInteger connectNum;
   private Map<String, Object> handler = new HashMap<>();
 
   public NettyServer() {
     boss = new NioEventLoopGroup();
     worker = new NioEventLoopGroup();
     boot = new ServerBootstrap();
+    connectNum = new AtomicInteger(0);
   }
 
   private void getBeanMap() {
@@ -62,9 +64,8 @@ public class NettyServer {
 
       boot.group(boss, worker)
           .channel(NioServerSocketChannel.class)
-          .childHandler(new printHandler(handler))
+          .childHandler(new printHandler(handler,connectNum))
           .option(ChannelOption.SO_BACKLOG, 1024)
-          .childOption(ChannelOption.SO_KEEPALIVE, true)
           .childOption(ChannelOption.TCP_NODELAY, true);
       ChannelFuture cf = boot.bind(port).sync();
       serviceRegistry.register(serverAddress +":"+ port);

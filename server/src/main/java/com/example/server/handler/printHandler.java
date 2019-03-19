@@ -9,12 +9,14 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class printHandler extends ChannelInitializer<SocketChannel> {
   Map<String,Object> handlerMap = new HashMap<>();
-
-  public printHandler(Map<String, Object> handlerMap) {
+  AtomicInteger num ;
+  public printHandler(Map<String, Object> handlerMap, AtomicInteger num) {
     this.handlerMap = handlerMap;
+    this.num = num;
   }
 
   @Override
@@ -23,6 +25,6 @@ public class printHandler extends ChannelInitializer<SocketChannel> {
     cp.addLast(new IdleStateHandler(5,0,0, TimeUnit.SECONDS));
     cp.addLast(new Decoder(Request.class));
     cp.addLast(new Encoder(Response.class));
-    cp.addLast(new serviceHandler(handlerMap));
+    cp.addLast(new serviceHandler(handlerMap,num));
   }
 }
