@@ -49,9 +49,9 @@ public class NettyServer {
     Map<String, Object> serviceBeanMap = app.getBeansWithAnnotation(RpcService.class);
     if (serviceBeanMap.size() > 0) {
       for (Object serviceBean : serviceBeanMap.values()) {
-        String interfaceName = serviceBean.getClass().getAnnotation(RpcService.class).value()
-            .getName();
-        handler.put(interfaceName, serviceBean);
+        String[] interfaceName = serviceBean.getClass().getAnnotation(RpcService.class).value()
+            .getName().split("\\.");
+        handler.put(interfaceName[interfaceName.length-1], serviceBean);
       }
     }
   }
