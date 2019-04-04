@@ -1,5 +1,5 @@
 # rpc
-a simple rpc frame depends on netty and zk. 
+a simple rpc framework depends on netty and zk. 
 
 #### 使用
 1. 需要在本地安装zookeeper并新建一个registry目录。
